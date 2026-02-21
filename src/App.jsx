@@ -28,11 +28,32 @@ export default function App() {
   const [currentMD, setCurrentMD] = useState(getRealTimeMiniDay())
   const [selectedMD, setSelectedMD] = useState(getRealTimeMiniDay())
 
-  // Pomodoro State
-  const [pomoMode, setPomoMode] = useState('focus')
-  const [timeLeft, setTimeLeft] = useState(POMO_MODES.focus.time)
-  const [isRunning, setIsRunning] = useState(false)
-  const [activeTaskRef, setActiveTaskRef] = useState(null)
+  const [pomoMode, setPomoMode] = useState(() => localStorage.getItem('quattro_pomoMode') || 'focus')
+
+  const [isRunning, setIsRunning] = useState(() => {
+    return localStorage.getItem('quattro_isRunning') === 'true'
+  })
+
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const savedTimeLeft = localStorage.getItem('quattro_timeLeft')
+    const savedTimestamp = localStorage.getItem('quattro_timestamp')
+    const running = localStorage.getItem('quattro_isRunning') === 'true'
+
+    if (savedTimeLeft && savedTimestamp && running) {
+      const msPassed = Date.now() - parseInt(savedTimestamp, 10)
+      const secsPassed = Math.floor(msPassed / 1000)
+      const newTimeLeft = Math.max(0, parseInt(savedTimeLeft, 10) - secsPassed)
+      return newTimeLeft
+    } else if (savedTimeLeft) {
+      return parseInt(savedTimeLeft, 10)
+    }
+    return POMO_MODES.focus.time
+  })
+
+  const [activeTaskRef, setActiveTaskRef] = useState(() => {
+    const saved = localStorage.getItem('quattro_activeTaskRef')
+    return saved ? JSON.parse(saved) : null
+  })
 
   // Analytics State
   const [stats, setStats] = useState(() => {
@@ -55,6 +76,15 @@ export default function App() {
 
   useEffect(() => { localStorage.setItem('quattro_tasks', JSON.stringify(tasks)) }, [tasks])
   useEffect(() => { localStorage.setItem('quattro_stats', JSON.stringify(stats)) }, [stats])
+  useEffect(() => { localStorage.setItem('quattro_activeTaskRef', JSON.stringify(activeTaskRef)) }, [activeTaskRef])
+
+  // Persist Pomodoro State every time it changes
+  useEffect(() => {
+    localStorage.setItem('quattro_pomoMode', pomoMode)
+    localStorage.setItem('quattro_isRunning', isRunning.toString())
+    localStorage.setItem('quattro_timeLeft', timeLeft.toString())
+    localStorage.setItem('quattro_timestamp', Date.now().toString())
+  }, [pomoMode, isRunning, timeLeft])
 
   // Real-time Master Clock
   useEffect(() => {
