@@ -7,12 +7,14 @@
   gap: 2rem;
   z-index: 10;
   position: relative;
+  overflow-x: hidden;
 }
 
 @media (max-width: 600px) {
   .app-container {
     padding: 1.5rem 1rem;
     gap: 1.5rem;
+    max-width: 100vw;
   }
 }
 
@@ -391,10 +393,12 @@
 
 .pomo-modes {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.5rem;
   background: var(--bg-secondary);
   padding: 0.25rem;
-  border-radius: 50px;
+  border-radius: 20px;
   border: 1px solid var(--glass-border);
 }
 
@@ -402,7 +406,7 @@
   background: transparent;
   color: var(--text-muted);
   font-size: 0.85rem;
-  padding: 0.4rem 1rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 50px;
   transition: all 0.2s ease;
 }
@@ -730,6 +734,7 @@
   display: flex;
   justify-content: center;
   gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .sleep-stat-box {
@@ -740,7 +745,25 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  min-width: 180px;
+  flex: 1;
+  min-width: 140px;
+}
+
+@media (max-width: 600px) {
+  .sleep-stats-preview {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .sleep-stat-box {
+    width: 100%;
+  }
+
+  .stat-num {
+    font-size: 2rem;
+  }
 }
 
 .stat-num {

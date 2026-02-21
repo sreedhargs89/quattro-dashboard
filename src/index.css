@@ -32,6 +32,10 @@ body {
   display: flex;
   justify-content: center;
   transition: background 1s ease;
+  overscroll-behavior-y: none;
+  /* prevents pull-to-refresh on mobile */
+  -webkit-tap-highlight-color: transparent;
+  /* removes blue tap highlight */
 }
 
 /* Base Utility Classes */
