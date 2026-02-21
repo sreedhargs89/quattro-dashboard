@@ -238,12 +238,12 @@ export default function App() {
         {/* Right Detail Panel */}
         <section className="day-details glass-panel key-switch">
           <div className="focus-header">
-            <div>
-              <h2 style={{ fontSize: '2.4rem', display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--text-main)', marginBottom: '0.2rem' }}>
-                <activeData.Icon size={40} color="var(--accent)" />
+            <div className="focus-header-titles">
+              <h2 className="phase-title">
+                <activeData.Icon className="phase-icon" color="var(--accent)" />
                 {activeData.name} Phase
               </h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', paddingLeft: '3.6rem' }}>
+              <p className="phase-subtitle">
                 {activeData.greeting}
               </p>
             </div>
