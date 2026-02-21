@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Sun, Sunrise, Sunset, Moon, Check, Activity, CheckCircle2, Play, Pause, RotateCcw, Target, Sparkles, TrendingUp, Compass, Focus } from 'lucide-react'
+import { Sun, Sunrise, Sunset, Moon, Check, Activity, CheckCircle2, Play, Pause, RotateCcw, Target, Sparkles, TrendingUp, Compass, Focus, Hourglass } from 'lucide-react'
 import './App.css'
 
 const MINI_DAYS = [
@@ -109,6 +109,7 @@ export default function App() {
 
   let progressPct = 0
   let timeLeftString = ''
+  let remainingTimeData = { hours: 0, mins: 0 }
   if (isCurrentView) {
     let startHour = activeData.start
     let startObj = new Date(now)
@@ -121,6 +122,7 @@ export default function App() {
     const rHours = Math.floor(remainingMs / (1000 * 60 * 60))
     const rMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60))
     timeLeftString = `${rHours}h ${rMins}m remaining`
+    remainingTimeData = { hours: rHours, mins: rMins }
   }
 
   const handleTaskChange = (mdId, index, newText) => {
@@ -253,13 +255,31 @@ export default function App() {
           </div>
 
           {isCurrentView && status === 'active' && activeData.id !== 4 && (
-            <div className="progress-section">
-              <div className="progress-meta">
-                <span>Phase Progress ({activeData.desc})</span>
-                <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{timeLeftString}</span>
+            <div className="phase-timer-container">
+              <div className="phase-meta">
+                <h3><Hourglass size={20} /> Phase Timeline</h3>
+                <p>Track your remaining {activeData.name} block duration. Execute your macro directives before time runs out.</p>
               </div>
-              <div className="progress-track">
-                <div className="progress-fill" style={{ width: `${progressPct}%` }} />
+
+              <div className="phase-ring-wrapper">
+                <svg className="phase-svg" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r={50} stroke="rgba(255,255,255,0.05)" strokeWidth="8" fill="none" />
+                  <circle
+                    cx="60" cy="60" r={50}
+                    stroke="var(--accent)"
+                    strokeWidth="8"
+                    fill="none"
+                    strokeDasharray={2 * Math.PI * 50}
+                    strokeDashoffset={(progressPct / 100) * (2 * Math.PI * 50)}
+                    strokeLinecap="round"
+                    transform="rotate(-90 60 60)"
+                    style={{ transition: 'stroke-dashoffset 1s linear' }}
+                  />
+                </svg>
+                <div className="phase-time-center">
+                  <div className="phase-time-val">{remainingTimeData.hours}<span className="phase-time-unit">hr</span></div>
+                  <div className="phase-time-val">{remainingTimeData.mins}<span className="phase-time-unit">m</span></div>
+                </div>
               </div>
             </div>
           )}
