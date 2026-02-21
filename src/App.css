@@ -452,6 +452,9 @@
   padding: 0.4rem 0.8rem;
   border-radius: 50px;
   transition: all 0.2s ease;
+  white-space: normal;
+  text-align: center;
+  word-wrap: break-word;
 }
 
 .pomo-mode-btn.active {
@@ -544,6 +547,10 @@
 @media (max-width: 600px) {
   .pomo-main-btn {
     width: 100%;
+    font-size: 0.9rem;
+    padding: 0.8rem 1rem;
+    white-space: normal;
+    text-align: center;
   }
 }
 
@@ -591,6 +598,9 @@
   background: var(--glass-highlight);
   border-radius: 12px;
   border-left: 4px solid var(--accent);
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 @media (max-width: 600px) {
@@ -599,6 +609,8 @@
     text-align: center;
     border-left: none;
     border-top: 4px solid var(--accent);
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
   }
 }
 
